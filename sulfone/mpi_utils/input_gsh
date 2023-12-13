@@ -1,0 +1,139 @@
+&CONTROL
+title     atod
+ml_ncpu    1
+gl_seed    1
+jobtype    md
+qm         fcnn
+maxenergy   0.05
+minenergy   0.05
+maxgrad    0.25
+mingrad	   0.25
+
+&Molecule
+ci	   7
+
+
+
+
+spin   0
+coupling 2 3, 2 4, 3 4, 2 5, 2 6, 2 7, 3 5, 3 6, 3 7, 4 5, 4 6, 4 7, 5 6, 5 7, 6 7
+
+
+
+
+
+
+
+&MD
+reset 1
+resetstep 0
+scale 1
+ninitcond 10
+format xyz
+temp 298
+step 2000
+size 20.67
+sfhp gsh
+
+
+
+
+root 2
+gap 0.3
+
+
+dosoc 1
+
+
+gapsoc 0.3
+thermo off
+
+
+
+silent 1
+verbose 0
+
+
+direct 20000
+buffer 500
+record 0
+
+&NN
+train_data data5212-47.json
+
+modeldir /path/to/model.
+
+silent   1
+nn_eg_type 2
+
+nn_soc_type 2
+
+
+&EG
+depth     4
+nn_size    500
+batch_size   64
+reg_l1     1e-9
+reg_l2     1e-9
+activ     leaky_softplus
+activ_alpha  0.03
+loss_weights  5 1
+use_reg_activ l2
+use_reg_weight l2
+val_split   0.1
+epo      1000
+epostep    10
+learning_rate_step  1e-3 1e-4 1e-5
+epoch_step_reduction 600 300 100
+
+&EG2
+depth     3
+nn_size    500
+batch_size   64
+reg_l1     1e-8
+reg_l2     1e-8
+activ     leaky_softplus
+activ_alpha  0.03
+loss_weights  5 1
+use_reg_activ l2
+use_reg_weight l2
+val_split   0.1
+epo      1000
+epostep    10
+learning_rate_step  1e-3 1e-4 1e-5
+epoch_step_reduction 600 300 100
+
+&SOC
+depth     6
+nn_size    400
+batch_size   128
+reg_l1     1e-8
+reg_l2     1e-8
+activ     leaky_softplus
+activ_alpha  0.03
+use_reg_activ l2
+use_reg_weight l2
+val_split   0.1
+epo      1000
+epostep    10
+learning_rate_step  1e-3 1e-4 1e-5
+epoch_step_reduction 600 300 100
+
+&SOC2
+depth     5
+nn_size    500
+batch_size   128
+reg_l1     1e-8
+reg_l2     1e-8
+activ     leaky_softplus
+activ_alpha  0.03
+use_reg_activ l2
+use_reg_weight l2
+val_split   0.1
+epo      1000
+epostep    10
+learning_rate_step  1e-3 1e-4 1e-5
+epoch_step_reduction 600 300 100
+
+
+
